@@ -1,0 +1,24 @@
+{
+  "name": "dickhub",
+  "version": "1.0.0",
+  "description": "a place for the tech community to post issues about dicks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js",
+    "heroku-postbuild":
+      "cd client/ && npm install --only=dev && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/astroash/dickhub.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/astroash/dickhub/issues"
+  },
+  "homepage": "https://github.com/astroash/dickhub#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
