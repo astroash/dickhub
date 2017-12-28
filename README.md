@@ -3,7 +3,7 @@
 ## Install Guide
 - run `npm i` then `npm start` from root
 - `cd` to `/client`
-- run `npm i` then `npm start` from /client
+- run `npm start` from /client
 - 
 ### Learnings
 
