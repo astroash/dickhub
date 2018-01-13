@@ -2,6 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
+const env = require('env2')('./config.env');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
