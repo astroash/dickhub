@@ -1,9 +1,10 @@
 const express = require('express');
 const logger = require('morgan');
+const passport = require('passport');
+const GitHubStrategy = require('passport-github').Strategy;
 const bodyParser = require('body-parser');
 const path = require('path');
 const env = require('env2')('./config.env');
-
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -16,6 +17,37 @@ app.use(logger('dev'));
 // Parse incoming requests data (https://github.com/expressjs/body-parser)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Github OAuth
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: 'http://localhost:3000/auth'
+    },
+    function(accessToken, refreshToken, profile, cb) {
+      console.log('accessToken', accessToken);
+      console.log('refreshToken', refreshToken);
+      console.log('profile', profile);
+      User.findOrCreate({ githubId: profile.id }, function(err, user) {
+        console.log('user', user);
+        return cb(err, user);
+      });
+    }
+  )
+);
+
+app.get('/login', passport.authenticate('github'));
+
+app.get(
+  '/auth',
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
+);
 
 // Answer API requests.
 app.get('/api', (req, res) => {

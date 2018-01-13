@@ -7,8 +7,9 @@
     "postinstall": "cd client && npm install",
     "test": "tape server/tests/*.test.js | tap-spec",
     "start": "node server/server.js",
-    "start:dev": "nodemon server/server.js",
-    "heroku-postbuild": "cd client/ && npm install --only=dev && npm install && npm run build"
+    "dev": "nodemon server/server.js",
+    "heroku-postbuild":
+      "cd client/ && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
     "type": "git",
