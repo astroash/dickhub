@@ -27,9 +27,6 @@ passport.use(
       callbackURL: 'http://localhost:3000/auth'
     },
     function(accessToken, refreshToken, profile, cb) {
-      console.log('accessToken', accessToken);
-      console.log('refreshToken', refreshToken);
-      console.log('profile', profile);
       User.findOrCreate({ githubId: profile.id }, function(err, user) {
         console.log('user', user);
         return cb(err, user);
