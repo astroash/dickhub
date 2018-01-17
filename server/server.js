@@ -19,30 +19,39 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Passport setup
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
 // Github OAuth
 passport.use(new GitHubStrategy(
   {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/auth',
+    callbackURL: 'http://localhost:3001/success',
   },
   ((accessToken, refreshToken, profile, cb) => {
-    User.findOrCreate({ githubId: profile.id }, (err, user) => {
-      console.log('user', user);
-      return cb(err, user);
-    });
+    // console.log('profile id', profile.id);
+    return cb(null, profile.id);
   }),
 ));
 
-app.get('/login', passport.authenticate('github'));
-
-app.get('/auth', passport.authenticate('github', { failureRedirect: '/login' }), (
-  req,
-  res,
-) => {
-  // Successful authentication, redirect home.
-  res.redirect('/');
+// Github Oauth route
+app.get('/auth', passport.authenticate('github', { failureRedirect: '/fail' }), (req, res) => {
 });
+
+app.get(
+  '/success',
+  passport.authenticate('github', { failureRedirect: '/fail' }),
+  (req, res) => {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  },
+);
 
 // Answer API requests.
 app.get('/api', (req, res) => {
