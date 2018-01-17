@@ -56,5 +56,5 @@ app.get('*', (request, response) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
