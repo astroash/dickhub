@@ -10,6 +10,9 @@ const crypto = require('crypto');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// our functions
+const { authGetUser } = require('./database/queries/auth-queries.js');
+
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
@@ -48,7 +51,9 @@ passport.use(new GitHubStrategy(
 app.get('/auth', passport.authenticate('github', { failureRedirect: '/fail' }), (req, res) => {});
 
 app.get('/success', passport.authenticate('github', { failureRedirect: '/fail' }), (req, res) => {
-  console.log(req);
+  authGetUser(req.user)
+    .then(console.log) // need to check if response is empty and create a user if needed
+    .catch(console.log);
   // Successful authentication, redirect home.
   res.redirect('/');
 });
