@@ -11,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // our functions
-const { authGetUser } = require('./database/queries/auth-queries.js');
+const index = require('./routes/index');
 
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../client/build')));
@@ -47,22 +47,8 @@ passport.use(new GitHubStrategy(
   },
 ));
 
-// Github Oauth route
-app.get('/auth', passport.authenticate('github', { failureRedirect: '/fail' }), (req, res) => {});
-
-app.get('/success', passport.authenticate('github', { failureRedirect: '/fail' }), (req, res) => {
-  authGetUser(req.user)
-    .then(console.log) // need to check if response is empty and create a user if needed
-    .catch(console.log);
-  // Successful authentication, redirect home.
-  res.redirect('/');
-});
-
-// Answer API requests.
-app.get('/api', (req, res) => {
-  res.set('Content-Type', 'application/json');
-  res.send('{"message":"Hello from the custom server!"}');
-});
+// grabs routes from ./routes/index.js
+app.use('/', index);
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', (request, response) => {
