@@ -2,7 +2,7 @@
 
 ## Huh?
 
-Sadly misogyny is still an issue in the workplace, especially in _"traditionally masculine"_ jobs. Dickhub is a place for developers to share and support each other with sexism they experience in the tech industry.
+Sadly misogyny is still an issue in the workplace, especially in _"traditionally masculine"_ jobs. DickHub is a place for developers to _raise issues_ and support each other with sexism they experience in the tech industry.
 
 ## Install Guide
 
