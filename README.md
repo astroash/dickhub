@@ -1,5 +1,11 @@
 # :eggplant:
 
+## Huh?
+
+Sadly misogyny is still an issue in the workplace, especially in _"traditionally masculine"_ jobs. DickHub is a place for developers to _raise issues_ and support each other with sexism they experience in the tech industry.
+
+Because sometimes, unfortunately, there's a whole lot of _dicks_...
+
 ## Install Guide
 
 * run `npm i` then `npm start` from root
