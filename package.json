@@ -21,12 +21,13 @@
   "homepage": "https://github.com/astroash/dickhub#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cookie-session": "^2.0.0-beta.3",
     "env2": "^2.2.0",
     "express": "^4.16.2",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",
-    "pg": "^7.4.0"
+    "pg-promise": "^7.3.3"
   },
   "devDependencies": {
     "eslint": "^4.15.0",

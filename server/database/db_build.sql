@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS users, issues, comments CASCADE;
 
 CREATE TABLE users (
   id            SERIAL         PRIMARY KEY,
-  username      VARCHAR(300)   NOT NULL,
+  username      VARCHAR(64)    NOT NULL,
   avatar        VARCHAR(20),     
   alias         VARCHAR(20)    NOT NULL
 );

@@ -5,9 +5,14 @@ const GitHubStrategy = require('passport-github').Strategy;
 const bodyParser = require('body-parser');
 const path = require('path');
 const env = require('env2')('./config.env');
+const crypto = require('crypto');
+const cookieSession = require('cookie-session');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// our functions
+const index = require('./routes/index');
 
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../client/build')));
@@ -27,6 +32,11 @@ passport.serializeUser((user, done) => {
   done(null, user);
 });
 
+passport.deserializeUser((id, done) => {
+  done(null, id);
+});
+
+app.use(cookieSession({ maxAge: 30 * 24 * 60 * 60 * 1000, keys: [process.env.COOKIEKEY] }));
 // Github OAuth
 passport.use(new GitHubStrategy(
   {
@@ -34,30 +44,17 @@ passport.use(new GitHubStrategy(
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: 'http://localhost:3001/success',
   },
-  ((accessToken, refreshToken, profile, cb) => {
-    // console.log('profile id', profile.id);
-    return cb(null, profile.id);
-  }),
+  (accessToken, refreshToken, profile, cb) => {
+    const hmac = crypto
+      .createHmac('sha256', process.env.SECRET)
+      .update(profile.id)
+      .digest('hex');
+    cb(null, hmac);
+  },
 ));
 
-// Github Oauth route
-app.get('/auth', passport.authenticate('github', { failureRedirect: '/fail' }), (req, res) => {
-});
-
-app.get(
-  '/success',
-  passport.authenticate('github', { failureRedirect: '/fail' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  },
-);
-
-// Answer API requests.
-app.get('/api', (req, res) => {
-  res.set('Content-Type', 'application/json');
-  res.send('{"message":"Hello from the custom server!"}');
-});
+// grabs routes from ./routes/index.js
+app.use('/', index);
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', (request, response) => {
