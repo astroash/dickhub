@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const env = require('env2')('./config.env');
 const crypto = require('crypto');
+const cookieSession = require('cookie-session');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -31,6 +32,11 @@ passport.serializeUser((user, done) => {
   done(null, user);
 });
 
+passport.deserializeUser((id, done) => {
+  done(null, id);
+});
+
+app.use(cookieSession({ maxAge: 30 * 24 * 60 * 60 * 1000, keys: [process.env.COOKIEKEY] }));
 // Github OAuth
 passport.use(new GitHubStrategy(
   {

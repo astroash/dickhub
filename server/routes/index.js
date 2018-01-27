@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const passport = require('passport');
+const path = require('path');
 const { authGetUser } = require('../database/queries/auth-queries.js');
 
 router.get(
@@ -14,13 +15,24 @@ router.get(
   '/success',
   passport.authenticate('github', { failureRedirect: '/fail' }),
   (req, res) => {
+    console.log('req.user in /success', req.user);
     authGetUser(req.user)
-      .then(console.log) // need to check if response is empty and create a user if needed
-      .catch(console.log);
-    // Successful authentication, redirect home.
-    res.redirect('/');
+      .then((userArr) => {
+        userArr.length ? res.redirect('/homepage') : res.redirect('/signup');
+      })
+      .catch((err) => {
+        console.log('err', err);
+        res.redirect('/');
+      });
   },
 );
+
+router.get('/signup', (req, res) => {
+  console.log();
+  console.log('req in /signup', req.user);
+  res.set('Content-Type', 'text/html');
+  res.sendFile(path.join(`${__dirname}/../view/signup.html`));
+});
 
 router.get('/api', (req, res) => {
   res.set('Content-Type', 'application/json');
