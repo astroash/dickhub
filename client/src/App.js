@@ -1,15 +1,27 @@
-import React, { Component } from 'react';
-import logo from './dickhub.svg';
+import React, { Component, Fragment } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './components/Home/index';
+import Signup from './components/Signup/index';
+import Issues from './components/Issues/index';
+import NewIssue from './components/NewIssue/index';
+import Header from './components/shared/Header/index';
+// import Issue from './components/Issue';
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <header>
-          <img src={logo} alt="logo" />
-          <h1>Welcome to DickHub</h1>
-        </header>
-      </div>
+      <Router>
+        <Fragment>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/issues" component={Issues} />
+            <Route exact path="/issues/new" component={NewIssue} />
+            {/* <Route exact path="/issues" component={Issue} /> */}
+          </Switch>
+        </Fragment>
+      </Router>
     );
   }
 }
