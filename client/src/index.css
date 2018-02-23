@@ -1,3 +1,8 @@
+html {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="font-size:18px"><text y="18">🍆</text></svg>'),
+    auto;
+}
+
 body {
   margin: 0;
   padding: 0;
